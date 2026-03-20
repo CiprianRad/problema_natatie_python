@@ -172,8 +172,8 @@ class AppConsole(object):
         print(*self.reports_service.find_valid_pairings())
 
     def __ui_get_optimal_pair(self):
-        valid_pairings = self.reports_service.find_valid_pairings()
-        print(f"Best pair is:" , *self.reports_service.find_best_pairing(valid_pairings))
+        # valid_pairings = self.reports_service.find_valid_pairings()
+        print(f"Best pair is:" , *self.reports_service.find_best_pairing())
 
     def __ui_schema(self):
         self.reports_service.schema()
