@@ -117,7 +117,7 @@ The project follows a **Layered OOP Architecture**, ensuring separation of conce
 
 ---
 
-## 🧩 Core Classes
+## Core Classes
 
 ### 🦆 `Duck`
 
@@ -193,7 +193,7 @@ Efficient enough for constraints up to **3000 ducks**
 
 ---
 
-## 🚀 Possible Improvements
+## Possible Improvements
 
 * Add **unit tests** for feasibility checks
 * Extend to **GUI visualization** of race simulation
@@ -212,5 +212,4 @@ It balances **performance, clarity, and extensibility** — making it both compe
 
 ---
 
-💬 *“Fast ducks win races, but smart architecture wins projects.”*
 
