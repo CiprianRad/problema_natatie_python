@@ -109,7 +109,7 @@ class ReportsService(object):
         times = [(2 * lanes[lane].length) / ducks[duck].speed for duck, lane in pairing]
         max_time = max(times)
         minimum_time = min(max_time, minimum_time)
-        print(f"Version 3 (My third method): {minimum_time:.6f}")
+        print(f"Best time is: : {minimum_time:.6f}")
 
 
     def minimum_time(self):
@@ -129,7 +129,7 @@ class ReportsService(object):
             maximum_time = max(times)
             minimum_time = min(minimum_time, maximum_time)
 
-        print(f"Minimum time (My 1st version): {minimum_time:.6f}")
+        print(f"Minimum time : {minimum_time:.6f}")
 
 
 #non-modular form of the problem:
