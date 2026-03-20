@@ -37,7 +37,7 @@ $$
 T = \max\left(\frac{2 \cdot d_i}{v_i}\right)
 $$
 
-*(where (d_i) = distance and (v_i) = speed of duck (i))*
+$$*(where (d_i) = distance and (v_i) = speed of duck (i))*$$
 
 This transforms the problem into:
 
@@ -157,7 +157,7 @@ The project follows a **Layered OOP Architecture**, ensuring separation of conce
 ## 📈 Complexity
 
 * **Time Complexity:**
-  $$O(N \log N + N \log precision)$$
+  $$O(N \log N + N \log )$$
 
 * **Space Complexity:**
   $$O(N)$$
