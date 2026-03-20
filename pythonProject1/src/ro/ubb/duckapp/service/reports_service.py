@@ -47,40 +47,6 @@ class ReportsService(object):
 
 
 
-
-
-
-
-    #for the valid_pairing function we need the following functions:
-    # def __get_all_duck_ids(self):
-    #     ducks = self.duck_repository.find_all()
-    #     duck_ids = []
-    #     for duck in ducks:
-    #         duck_ids.append(duck.id)
-    #     return duck_ids
-    #
-    # def __get_all_lane_ids(self):
-    #     lanes = self.lane_repository.find_all()
-    #     lane_ids = []
-    #     for lane in lanes:
-    #         lane_ids.append(lane.id)
-    #     return lane_ids
-
-    # to simplify the writing in the module
-    # def __get_all_ducks(self):
-    #     duck_ids = self.__get_all_duck_ids()
-    #     duck_list = self.duck_repository.find_all()
-    #     ducks_dictionary = dict(zip(duck_ids, duck_list))
-    #     return ducks_dictionary
-    #
-    # def __get_all_lanes(self):
-    #     lane_ids = self.__get_all_lane_ids()
-    #     lane_list = self.lane_repository.find_all()
-    #     lanes_dictionary = dict(zip(lane_ids, lane_list))
-    #     return lanes_dictionary
-
-    #imporved version for the 4 functions above:
-
     def __get_all_ducks(self):
         return {duck.id: duck for duck in self.duck_repository.find_all()}
 
@@ -172,7 +138,7 @@ class ReportsService(object):
         times = [(2 * lanes[lane].length) / ducks[duck].speed for duck, lane in pairing]
         max_time = max(times)
         minimum_time = min(max_time, minimum_time)
-        print(f"Version 3 baby: {minimum_time:.6f}")
+        print(f"Version 3 (My third method): {minimum_time:.6f}")
 
 
 
