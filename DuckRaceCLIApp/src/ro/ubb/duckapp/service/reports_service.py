@@ -1,4 +1,4 @@
-from itertools import combinations
+from itertools import combinations, islice
 
 
 class ReportsService(object):
@@ -56,35 +56,20 @@ class ReportsService(object):
                 return False
         return True
 
-    # def find_valid_pairings(ducks, lanes):
-    #     duck_ids = sorted(ducks.keys(), key=lambda d: ducks[d][0])  # Sort by resistance
-    #     lane_ids = sorted(lanes.keys(), key=lambda l: lanes[l])  # Sorted by length
-    #
-    #     all_permutations = permutations(duck_ids, len(lane_ids))  # Assign ducks to lanes
-    #     valid_pairings = []
-    #
-    #     for perm in all_permutations:
-    #         pairing = list(zip(perm, lane_ids))
-    #         if valid_pairing(ducks, lanes, pairing):
-    #             valid_pairings.append(pairing)
-    #
-    #     return valid_pairings
 
-    def find_valid_pairings(self):
+
+    def find_valid_pairings(self, limit=100):
         ducks = self.__get_all_ducks()
         lanes = self.__get_all_lanes()
+        
         duck_ids = sorted(ducks.keys(), key=lambda d: ducks[d].resistance)
         lane_ids = sorted(lanes.keys(), key=lambda l: lanes[l].length)
 
-        all_permutations = combinations(duck_ids, len(lane_ids))
-        valid_pairings = []
+        combo_generator = combinations(duck_ids, len(lane_ids))
 
-        for perm in all_permutations:
-            pairing = list(zip(perm, lane_ids))
-            if self.__valid_pairing(pairing):
-                valid_pairings.append(pairing)
-
-        return valid_pairings
+        # islice will stop the loop exactly when it hits the limit
+        for combo in islice(combo_generator, limit):
+            yield list(zip(combo, lane_ids))
 
 
     def __calculate_max_time(self, pairing):
@@ -93,10 +78,63 @@ class ReportsService(object):
         return max((2 * lanes[lane].length) / ducks[duck].speed for duck, lane in pairing)
 
 
-    def find_best_pairing(self, valid_pairings):
-        if not valid_pairings:
-            return None
-        return min(valid_pairings, key=lambda pairing: self.__calculate_max_time(pairing))
+def find_best_pairing(self):
+        ducks = self.__get_all_ducks()
+        lanes = self.__get_all_lanes()
+
+        duck_ids = sorted(ducks.keys(), key=lambda d: ducks[d].resistance)
+        lane_ids = sorted(lanes.keys(), key=lambda l: lanes[l].length)
+
+        N = len(duck_ids)
+        M = len(lane_ids)
+
+        if N < M:
+            return None  # Impossible to pair if there are fewer ducks than lanes
+
+        # dp[i][j] holds the minimum maximum-time using the first 'i' ducks for 'j' lanes.
+        dp = [[float('inf')] * (M + 1) for _ in range(N + 1)]
+        for i in range(N + 1):
+            dp[i][0] = 0  # 0 lanes cost 0 time
+
+        # Keep track of choices so we can reconstruct the actual pair later
+        choice = [[False] * (M + 1) for _ in range(N + 1)]
+
+        for i in range(1, N + 1):
+            for j in range(1, M + 1):
+                duck = ducks[duck_ids[i - 1]]
+                lane = lanes[lane_ids[j - 1]]
+
+                # Calculate time for this specific duck on this specific lane
+                current_time = (2 * lane.length) / duck.speed
+
+                # Option 1: Don't use this duck, carry over best time from previous ducks
+                skip_time = dp[i - 1][j]
+
+                # Option 2: Use this duck. The new max time is the highest between 
+                # the current run and the maximum of the previous lanes.
+                use_time = max(dp[i - 1][j - 1], current_time)
+
+                if use_time < skip_time:
+                    dp[i][j] = use_time
+                    choice[i][j] = True
+                else:
+                    dp[i][j] = skip_time
+                    choice[i][j] = False
+
+        # Backtrack to build the final list of (duck_id, lane_id) pairs
+        best_pairing = []
+        curr_i, curr_j = N, M
+        
+        while curr_j > 0 and curr_i > 0:
+            if choice[curr_i][curr_j]:
+                best_pairing.append((duck_ids[curr_i - 1], lane_ids[curr_j - 1]))
+                curr_j -= 1
+                curr_i -= 1
+            else:
+                curr_i -= 1
+
+        best_pairing.reverse()
+        return best_pairing
 
 
 
